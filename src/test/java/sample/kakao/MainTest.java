@@ -56,4 +56,21 @@ public class MainTest {
 		new CountDownLatch(1).await(1, TimeUnit.SECONDS);
 	}
 
+	@Test
+	public void test3() throws InterruptedException {
+		Flux.range(1, 10)
+			.map(v -> {
+				if (v == 7) {
+					throw new IllegalArgumentException("test");
+				}
+				return v + "a";
+			})
+			.map(v -> v + "b")
+			.subscribe(value -> System.out.println("RECEIVED " + value)
+				, error -> System.out.println("CAUGHT " + error)
+			);
+
+		new CountDownLatch(1).await(1, TimeUnit.SECONDS);
+	}
+
 }
