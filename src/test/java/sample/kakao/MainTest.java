@@ -37,11 +37,13 @@ public class MainTest {
 		Scheduler s = Schedulers.newParallel("parallel-scheduler", 4);
 
 		Flux<String> flux = Flux
-			.range(1, 10).log()
+			.range(1, 10)
 			.map(i -> 10 + i)
+			.doOnNext(i -> System.out.println(i + " | INITIAL: " + Thread.currentThread().getName()))
+//			.flatMap(i -> Mono.fromCallable(() -> i + " | ZERO: " + Thread.currentThread().getName()).subscribeOn(s))
 			.map(i -> i + " | FIRST: " + Thread.currentThread().getName())
 			.map(i -> i + " | SECOND: " + Thread.currentThread().getName())
-			.publishOn(s)
+//			.publishOn(s)
 //			.subscribeOn(s)
 			.map(i -> i + " | THIRD: " + Thread.currentThread().getName())
 			.map(i -> i + " | FOURTH: " + Thread.currentThread().getName())
