@@ -46,7 +46,7 @@ public class MainTest {
 				.map(i -> i + " | FIRST: " + Thread.currentThread().getName())
 				.map(i -> i + " | SECOND: " + Thread.currentThread().getName())
 //				.publishOn(s)
-				.subscribeOn(s)
+//				.subscribeOn(s)
 				.map(i -> i + " | THIRD: " + Thread.currentThread().getName())
 				.map(i -> i + " | FOURTH: " + Thread.currentThread().getName())
 			;
@@ -65,9 +65,10 @@ public class MainTest {
 				}
 				return v + "a";
 			})
+//			.onErrorResume(e -> Mono.empty())
 			.map(v -> v + "b")
 			.subscribe(value -> System.out.println("RECEIVED " + value)
-				, error -> System.out.println("CAUGHT " + error)
+//				, error -> System.out.println("CAUGHT " + error)
 			);
 
 		new CountDownLatch(1).await(1, TimeUnit.SECONDS);
