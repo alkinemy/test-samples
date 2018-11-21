@@ -20,14 +20,14 @@ public class Test1 {
 		long start = System.currentTimeMillis();
 		List<Integer> integers = Flux.just(1, 2, 3, 4, 5, 6, 7)
 			.flatMap(i -> Mono.fromCallable(() -> getResult(i))
-				.doOnError(e -> System.out.println("Fail1: " + e.getMessage() + ", " + e.getClass()))
+				.doOnError(e -> System.out.println("Fail1: " + e.getMessage() + ", " + e.getCause()))
 				.onErrorResume(e -> Mono.empty())
 				.timeout(Duration.ofSeconds(5), Mono.empty())
 				.subscribeOn(scheduler)
 			)
 			.doOnNext(r -> System.out.println(Thread.currentThread().getName() + ": " + r.getI()))
 			.map(Result::square)
-			.filter(s -> s % 2 == 1)
+//			.filter(s -> s % 2 == 1)
 			.sort(Comparator.comparingInt(i -> i))
 			.collectList()
 			.block();
